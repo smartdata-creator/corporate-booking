@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAGUM MICE & TRAVEL BOOKING</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <header class="main-header">
+        <div class="container" style="max-width: none;">
+            <a href="#" class="logo">KAGUM MICE & TRAVEL BOOKING</a>
+            <nav class="main-nav">
+                <a href="#" data-action="open-modal" data-target="#public-review-modal" class="nav-link-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" style="width: 1.25rem; height: 1.25rem;"><path fill-rule="evenodd" d="M18 5v8a2 2 0 01-2 2h-5l-5 4v-4H4a2 2 0 01-2-2V5a2 2 0 012-2h12a2 2 0 012 2zM9 11a1 1 0 11-2 0 1 1 0 012 0zm4 0a1 1 0 11-2 0 1 1 0 012 0z" clip-rule="evenodd" /></svg>
+                    <span>Beri Ulasan</span>
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h1>Solusi Booking Korporat yang Efisien dan Terpercaya</h1>
+                <p>Nikmati kemudahan pemesanan hotel untuk kebutuhan bisnis Anda dengan harga khusus dan fasilitas kredit.</p>
+                <div class="hero-actions" style="display: flex; justify-content: center; gap: 1rem; margin-top: 1.5rem;"><a href="#" id="open-modal-btn" class="btn btn-primary btn-lg">Daftar Sekarang</a>
+                    <a href="login.html" class="btn btn-secondary">Login Perusahaan</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="promo-section">
+            <div class="container">
+                <div class="section-header">
+                    <p>Jangan lewatkan promo menarik dari kami. Dapatkan penawaran terbaik untuk perjalanan Anda!</p>
+                </div>
+                <div class="promo-scroller">
+                    <div class="promo-grid" id="promo-grid">
+                        <!-- Promo akan dirender di sini oleh script.js -->
+                        <p>Memuat promo...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="hotels">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Destinations You'll Love</h2>
+                    <p>Planning a getaway? Explore our latest properties, from resorts to villas to enjoy your memorable stays!</p>
+                </div>
+                <div class="hotel-grid" id="hotel-grid">
+                    <!-- Kartu hotel akan dirender di sini oleh script.js -->
+                    <p>Memuat data hotel...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="guest-reviews" class="guest-reviews">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Ulasan Tamu Kami</h2>
+                    <p>Lihat apa yang dikatakan tamu tentang pengalaman menginap mereka di properti kami.</p>
+                </div>
+                <div class="review-grid" id="hotel-reviews-grid">
+                    <!-- Ulasan hotel akan dirender di sini oleh script.js -->
+                    <p>Memuat ulasan...</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Apa Kata Mereka Tentang Kami</h1>
+                    <p>Kisah sukses dari para klien yang telah mempercayakan perjalanan bisnisnya kepada kami.</p>
+                </div>
+                <div class="testimonial-scroller">
+                    <div class="testimonial-grid">
+                        <!-- Kartu testimoni akan dirender di sini oleh script.js -->
+                    </div>
+                </div> 
+            </div>
+        </section>
+
+    <footer id="contact" class="main-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-column">
+                    <h4>KAGUM MICE & TRAVEL Booking</h4>
+                    <p>Grand Asia Afrika, B 05<br>
+                    Jl. Karapitan No.1<br>
+                    Bandung, Jawa Barat, Indonesia</p>
+                </div>
+                <div class="footer-column">
+                    <h4>Produk</h4>
+                    <ul>
+                        <li><a href="#">Kamar Hotel</a></li>
+                        <li><a href="#">Ruang Meeting</a></li>
+                        <li><a href="#">Weeding</a></li>
+                        <li><a href="#">Sewa Mobil</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Perusahaan</h4>
+                    <ul>
+                        <li><a href="#">Tentang Kami</a></li>
+                        <li><a href="#">Karier</a></li>
+                        <li><a href="#">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>Hubungi Kami</h4>
+                    <ul>
+                        <li><a href="#">Pusat Bantuan</a></li>
+                        <li><a href="#">sales@namaperusahaan.com</a></li>
+                        <li><a href="#">+62 21 1234 5678</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 KAGUM MICE & TRAVEL BOOKING. Semua Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Overlay tunggal untuk semua modal -->
+    <div class="modal-overlay"></div>
+
+    <!-- Modal Pengajuan Kredit -->
+    <div class="modal" id="credit-modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" title="Tutup">&times;</button>
+            <h2>Formulir Pengajuan Fasilitas Kredit</h2>
+            <p>Dapatkan kemudahan pemesanan untuk kebutuhan korporat Anda.</p>
+            
+            <form id="credit-form" class="form-container">
+                <!-- Informasi Legalitas Perusahaan -->
+                <fieldset class="form-group">
+                    <legend>Informasi Perusahaan</legend>
+                    <div class="form-group">
+                        <label for="company-name">Nama Perusahaan (Sesuai Akta)</label>
+                        <input type="text" id="company-name" name="companyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company-npwp">No. NPWP Perusahaan</label>
+                        <input type="text" id="company-npwp" name="companyNpwp" placeholder="Contoh: 001.234.567.8-901.000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="company-address">Alamat Perusahaan</label>
+                        <textarea id="company-address" name="companyAddress" rows="3" required></textarea>
+                    </div>
+                </fieldset>
+
+                <!-- Informasi Kontak Penanggung Jawab -->
+                <fieldset class="form-group">
+                    <legend>Penanggung Jawab</legend>
+                    <div class="form-group">
+                        <label for="contact-person-name">Nama PIC (Person in Charge)</label>
+                        <input type="text" id="contact-person-name" name="contactPersonName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-person-email">Email PIC</label>
+                        <input type="email" id="contact-person-email" name="contactPersonEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-person-phone">Nomor Telepon PIC</label>
+                        <input type="tel" id="contact-person-phone" name="contactPersonPhone" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="finance-pic-email">Email Bagian Keuangan (Untuk Penagihan)</label>
+                        <input type="email" id="finance-pic-email" name="financePicEmail" required>
+                    </div>
+                </fieldset>
+
+                <!-- Kebutuhan Layanan -->
+                <fieldset class="form-group">
+                    <legend>Jenis Kebutuhan</legend>
+                    <div class="form-options-grid">
+                        <div>
+                            <input type="radio" id="mice" name="serviceType" value="mice" required>
+                            <label for="mice">MICE</label>
+                        </div>
+                        <div>
+                            <input type="radio" id="travel" name="serviceType" value="travel" required>
+                            <label for="travel">TRAVEL</label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Informasi Tambahan untuk Penilaian Kredit -->
+                <fieldset class="form-group">
+                    <legend>Informasi Kredit</legend>
+                     <div class="form-group">
+                        <label for="credit-estimation">Estimasi Kebutuhan Kredit per Bulan (IDR)</label>
+                        <input type="number" id="credit-estimation" name="creditEstimation" placeholder="Contoh: 50000000" required>
+                    </div>
+                    <div class="form-group">
+                        <p style="font-size: 0.875rem; color: #666; margin-top: 0;">
+                            <strong>Dokumen Pendukung:</strong> Tim kami akan menghubungi Anda untuk meminta dokumen legalitas perusahaan seperti SIUP/NIB, Akta Perusahaan, dan KTP Direksi sebagai bagian dari proses verifikasi.
+                        </p>
+                    </div>
+                </fieldset>
+
+                <!-- Persetujuan -->
+                <fieldset class="form-group">
+                    <legend>Persetujuan</legend>
+                    <div class="form-group-checkbox">
+                        <input type="checkbox" id="terms-agreement" name="termsAgreement" value="agree" required>
+                        <label for="terms-agreement">
+                            Saya menyatakan bahwa data yang diisi adalah benar dan saya telah membaca serta menyetujui <a href="terms-and-conditions.html" target="_blank">Syarat dan Ketentuan</a> yang berlaku.
+                        </label>
+                    </div>
+                </fieldset>
+
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Kirim Pengajuan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Form Ulasan Publik -->
+    <div class="modal" id="public-review-modal">
+        <div class="modal-content">
+            <button class="modal-close-btn" title="Tutup">&times;</button>
+            <h2>Bagaimana Pengalaman Anda?</h2>
+            <p>Kami sangat menghargai masukan Anda untuk meningkatkan layanan kami.</p>
+            <form id="public-review-form">
+                <div class="form-group">
+                    <label for="public-reviewer-name">Nama Anda</label>
+                    <input type="text" id="public-reviewer-name" name="reviewerName" required>
+                </div>
+                <div class="form-group">
+                    <label for="public-review-hotel-id">Pilih Hotel</label>
+                    <select id="public-review-hotel-id" name="hotelId" required>
+                        <option value="">Memuat hotel...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="public-review-comment">Ulasan Anda</label>
+                    <textarea id="public-review-comment" name="comment" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js" defer></script>
+</body>
+</html>

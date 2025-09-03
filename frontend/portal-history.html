@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Riwayat Booking - Portal Perusahaan</title>
+    <link rel="stylesheet" href="style.css"> <!-- Menambahkan style utama -->
+    <link rel="stylesheet" href="portal.css">
+    <style>
+        .table-controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .table-controls input[type="search"] {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #fff;
+            flex-grow: 1;
+            min-width: 300px;
+        }
+        /* Styles for Review Modal Stars */
+        .star-rating {
+            font-size: 2.5rem;
+            color: #d1d5db; /* light gray */
+            cursor: pointer;
+            line-height: 1;
+        }
+        .star-rating span {
+            transition: color 0.2s;
+            padding: 0 0.1em;
+        }
+        .star-rating span:hover,
+        .star-rating span.hover {
+            color: #f59e0b; /* amber */
+        }
+        .star-rating span.selected {
+            color: #f59e0b; /* amber */
+        }
+    </style>
+</head>
+<body>
+    <!-- ================================================================= -->
+    <!-- MODALS -->
+    <!-- ================================================================= -->
+
+    <!-- Review Modal -->
+    <div class="modal-overlay" id="review-modal-overlay"></div>
+    <div class="modal" id="review-modal">
+        <button class="modal-close-btn" id="review-modal-close-btn" aria-label="Tutup">&times;</button>
+        <div class="modal-header">
+            <h2>Beri Ulasan untuk <span id="review-modal-hotel-name"></span></h2>
+        </div>
+        <div class="modal-body">
+            <form id="review-form">
+                <input type="hidden" id="review-booking-id">
+                <input type="hidden" id="review-hotel-id">
+                <input type="hidden" id="review-rating-value" required>
+                <div class="form-group">
+                    <label>Rating Anda</label>
+                    <div class="star-rating" id="review-star-rating">
+                        <span data-value="1">★</span><span data-value="2">★</span><span data-value="3">★</span><span data-value="4">★</span><span data-value="5">★</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="review-comment">Komentar Anda (Opsional)</label>
+                    <textarea id="review-comment" rows="4" placeholder="Bagaimana pengalaman menginap Anda?"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
+            </form>
+        </div>
+    </div>
+
+    <header class="main-header">
+        <div class="container">
+            <div id="company-name-display" class="logo">Memuat...</div>
+            <nav class="main-nav">
+                <a href="portal.html" class="nav-link-item">Kembali ke Portal</a>
+                <!-- Tombol Ganti Password dengan ikon -->
+                <button id="change-password-btn" class="icon-btn" title="Ganti Password">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 111.06-1.06l1.591 1.59a.75.75 0 01-1.06 1.061l-1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25a.75.75 0 01.75.75zM17.894 18.894a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 11-1.06 1.061l-1.591-1.59zM12 18.75a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V19.5a.75.75 0 01.75-.75zM5.106 17.894a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.061-1.06l1.59-1.591zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.106 5.106a.75.75 0 011.06 1.06l-1.59 1.591a.75.75 0 11-1.06-1.061l1.59-1.591z" /></svg>
+                </button>
+                <a href="#" id="logout-btn" class="btn btn-primary">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="room-selection">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Riwayat Booking Anda</h2>
+                    <p>Berikut adalah daftar semua pemesanan yang telah dibuat atas nama perusahaan Anda.</p>
+                </div>
+                <div class="table-controls">
+                    <input type="search" id="history-search-input" placeholder="Cari berdasarkan nama tamu, hotel, atau ID booking...">
+                    <select id="history-status-filter">
+                        <option value="">Semua Status</option>
+                        <option value="confirmed">Confirmed</option>
+                        <option value="pending_approval">Menunggu Persetujuan</option>
+                        <option value="canceled">Canceled</option>
+                        <option value="rejected_by_company">Ditolak Perusahaan</option>
+                    </select>
+                    <button id="history-filter-reset" class="btn btn-secondary">Reset</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Booking</th>
+                                <th>Hotel</th>
+                                <th>Tipe Kamar</th>
+                                <th>Nama Tamu</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Total Harga</th>
+                                <th>Status</th>
+                                <th>Tgl. Pesan</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="history-table-body">
+                            <!-- Data riwayat akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 MICE & TRAVEL Booking. Semua Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="change-password-modal-overlay"></div>
+    <div class="modal" id="change-password-modal">
+        <button class="modal-close-btn" id="change-password-modal-close-btn" aria-label="Tutup">&times;</button>
+        <div class="modal-header">
+            <h2>Ganti Password</h2>
+            <p>Untuk keamanan, silakan ganti password sementara Anda.</p>
+        </div>
+        <div class="modal-body">
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="old-password">Password Lama</label>
+                    <input type="password" id="old-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Password Baru (min. 6 karakter)</label>
+                    <input type="password" id="new-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Konfirmasi Password Baru</label>
+                    <input type="password" id="confirm-password" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Password Baru</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="portal-history.js"></script>
+</body>
+</html>

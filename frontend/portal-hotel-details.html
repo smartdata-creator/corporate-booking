@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Hotel - Perusahaan</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="style.css"> <!-- Menambahkan style utama untuk konsistensi -->
+    <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div id="company-name-display" class="logo">Memuat...</div>
+            <nav class="main-nav">
+                <a href="portal-history.html" class="nav-link-item">Riwayat Booking</a>
+                <!-- Tombol Ganti Password dengan ikon -->
+                <button id="change-password-btn" class="icon-btn" title="Ganti Password">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 111.06-1.06l1.591 1.59a.75.75 0 01-1.06 1.061l-1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25a.75.75 0 01.75.75zM17.894 18.894a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 11-1.06 1.061l-1.591-1.59zM12 18.75a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V19.5a.75.75 0 01.75-.75zM5.106 17.894a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.061-1.06l1.59-1.591zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.106 5.106a.75.75 0 011.06 1.06l-1.59 1.591a.75.75 0 11-1.06-1.061l1.59-1.591z" /></svg>
+                </button>
+                <a href="#" id="logout-btn" class="btn btn-primary">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- Bagian Hero dengan Gambar Hotel -->
+        <section class="hero" id="hotel-hero-section">
+            <!-- Gambar hero akan diisi oleh JavaScript -->
+            <div class="container">
+                <h1 id="hotel-hero-title"></h1>
+                <p id="hotel-hero-subtitle"></p>
+            </div>
+        </section>
+
+        <section class="hotel-details-header" style="padding-top: 2rem; padding-bottom: 1rem;">
+            <div class="container" id="hotel-info-container">
+                <!-- Info hotel akan dirender di sini -->
+                <p>Memuat rating...</p>
+            </div>
+        </section>
+
+        <section class="hotel-description-section">
+            <div class="container" id="hotel-description-container">
+                <!-- Deskripsi dan fasilitas akan dirender di sini -->
+            </div>
+        </section>
+
+        <section class="room-selection">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Pilihan Tipe Kamar</h2>
+                    <p>Pilih tipe kamar yang sesuai dengan kebutuhan Anda dengan harga spesial.</p>
+                </div>
+                <div class="room-grid" id="room-grid">
+                    <!-- Kartu kamar akan dirender di sini oleh portal-hotel-details.js -->
+                    <!-- Contoh struktur kartu kamar yang akan dirender oleh JavaScript -->
+                    <!--
+                    <div class="room-card">
+                        <img src="https://via.placeholder.com/400x250" alt="Nama Kamar" class="room-card-img">
+                        <div class="room-card-body">
+                            <h3>Nama Tipe Kamar</h3>
+                            <p class="room-price">Rp 1.200.000 / malam</p>
+                            <button class="btn btn-primary book-btn">Pesan Sekarang</button>
+                        </div>
+                    </div>
+                    -->
+                </div>
+            </div>
+        </section>
+
+        <section class="reviews-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Ulasan Tamu</h2>
+                    <p>Lihat apa kata para tamu yang pernah menginap.</p>
+                </div>
+                <div id="reviews-list">
+                    <!-- Ulasan akan dirender di sini oleh JS -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 KAGUM MICE & TRAVEL BOOKING. Semua Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="change-password-modal-overlay"></div>
+    <div class="modal" id="change-password-modal">
+        <button class="modal-close-btn" id="change-password-modal-close-btn" aria-label="Tutup">&times;</button>
+        <div class="modal-header">
+            <h2>Ganti Password</h2>
+            <p>Untuk keamanan, silakan ganti password sementara Anda.</p>
+        </div>
+        <div class="modal-body">
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="old-password">Password Lama</label>
+                    <input type="password" id="old-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Password Baru (min. 6 karakter)</label>
+                    <input type="password" id="new-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Konfirmasi Password Baru</label>
+                    <input type="password" id="confirm-password" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Password Baru</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal-overlay" id="booking-modal-overlay"></div>
+    <div class="modal" id="booking-modal">
+        <button class="modal-close-btn" id="booking-modal-close-btn" aria-label="Tutup">&times;</button>
+        <div class="modal-header">
+            <h2 id="booking-modal-title">Formulir Pemesanan Korporat</h2>
+            <p id="booking-modal-room-name">Nama Kamar</p>
+        </div>
+        <div class="modal-body">
+            <form id="booking-form">
+                <input type="hidden" id="booking-room-id">
+                <input type="hidden" id="booking-room-price">
+                <div class="form-group">
+                    <label for="guest-name">Nama Tamu</label>
+                    <input type="text" id="guest-name" name="guest_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="guest-email">Email Tamu</label>
+                    <input type="email" id="guest-email" name="guest_email" required>
+                </div>
+                <div class="form-group">
+                    <label for="guest-id-image">Foto KTP/Paspor</label>
+                    <input type="file" id="guest-id-image" name="guest_id_image" accept="image/*" required>
+                </div>
+                <div class="form-group">
+                    <label for="guarantee-letter">Surat Jaminan (Guarantee Letter)</label>
+                    <input type="file" id="guarantee-letter" name="guarantee_letter" accept="application/pdf" required>
+                </div>
+                <div class="form-group-grid">
+                    <div class="form-group"><label for="check-in">Tanggal Check-in</label><input type="date" id="check-in" name="check_in_date" required></div>
+                    <div class="form-group"><label for="check-out">Tanggal Check-out</label><input type="date" id="check-out" name="check_out_date" required></div>
+                </div>
+                <div class="booking-summary">
+                    <h4>Ringkasan Biaya</h4>
+                    <p>Total Malam: <span id="total-nights">0</span></p>
+                    <p>Total Harga: <strong id="total-price">Rp 0</strong></p>
+                </div>
+                <div class="booking-availability-status" id="booking-availability-status">
+                    <!-- Status ketersediaan akan dirender di sini oleh JavaScript -->
+                </div>
+                <div id="booking-error-message" class="form-error-message" style="display: none;"></div>
+                <button type="submit" class="btn btn-primary" id="confirm-booking-btn">
+                    <span class="btn-text">Konfirmasi Pemesanan</span>
+                    <span class="btn-spinner" style="display: none;"></span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script src="portal-hotel-details.js"></script>
+</body>
+</html>

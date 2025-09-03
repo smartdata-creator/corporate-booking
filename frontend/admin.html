@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - KAGUM MICE & TRAVEL BOOKING</title>
+    <link rel="stylesheet" href="admin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* Style untuk ikon lampiran di tabel booking */
+        .attachment-icon {
+            display: inline-block;
+            margin: 0 5px;
+            font-size: 1.5rem; /* Ukuran ikon */
+            color: #4A5568; /* Warna abu-abu netral */
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+        .attachment-icon:hover {
+            color: var(--primary-color); /* Warna utama saat di-hover */
+        }
+        /* Style untuk tombol aksi agar ada jarak */
+        .action-buttons .btn, .action-buttons .btn-sm {
+            margin-right: 4px;
+            margin-bottom: 4px; /* Untuk wrapping di layar kecil */
+        }
+        .action-buttons .btn:last-child, .action-buttons .btn-sm:last-child {
+            margin-right: 0;
+        }
+        /* Style untuk grid pengaturan */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 24px;
+        }
+        .settings-card {
+            background-color: #fff;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 24px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out, border-color 0.2s ease-in-out;
+            display: flex;
+            flex-direction: column;
+        }
+        .settings-card-icon {
+            font-size: 1.75rem;
+            color: var(--primary-color);
+            margin-bottom: 16px;
+            width: 50px;
+            height: 50px;
+            background-color: #eef2ff; /* Warna primer yang lebih terang */
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .settings-card h3 {
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 1.15rem;
+            color: #1a202c;
+        }
+        .settings-card p {
+            color: #718096;
+            font-size: 0.9rem;
+            flex-grow: 1;
+            margin-bottom: 24px;
+        }
+        .settings-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.07);
+            border-color: #c7d2fe;
+            cursor: pointer;
+        }
+        .table-controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .table-controls input[type="search"],
+        .table-controls select {
+            padding: 8px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 14px;
+            background-color: #fff;
+        }
+        .table-controls input[type="search"] {
+            flex-grow: 1;
+            min-width: 300px;
+        }
+        /* Style untuk sel komentar agar tidak terlalu lebar */
+        .comment-cell {
+            max-width: 350px;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        .mt-4 {
+            margin-top: 1.5rem;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="admin-layout">
+        <div class="mobile-overlay" id="mobile-overlay"></div>
+        <aside class="sidebar" id="admin-sidebar">
+            <div class="sidebar-header">
+                <h3>Admin Panel</h3>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li><a href="#dashboard" class="nav-link active">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h7.5" /></svg>
+                        <span>Dashboard</span>
+                    </a></li>
+                    <li><a href="#hotel-management" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18v18m10.5-18v18m6-13.5V21M6.75 6.75h.75m-.75 3h.75m-.75 3h.75m3-6h.75m-.75 3h.75m-.75 3h.75M6.75 21v-3.375c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21M3 3h12m6 0h.008v.008H21V3z" /></svg>
+                        <span>Kelola Hotel & Kamar</span>
+                    </a></li>
+                    <li><a href="#booking-management" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0h18M12 12.75h.008v.008H12v-.008z" /></svg>
+                        <span>Kelola Booking</span>
+                    </a></li>
+                    <li><a href="#testimonial-management" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" /></svg>
+                        <span>Kelola Testimoni</span>
+                    </a></li>
+                    <li><a href="#promo-management" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" /><path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" /></svg>
+                        <span>Kelola Promo</span>
+                    </a></li>
+                    <li><a href="#company-management" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5M10 11.25h4M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z" /></svg>
+                        <span>Kelola Perusahaan</span>
+                    </a></li>
+                    <li><a href="#submission-management" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75c0-.231-.035-.454-.1-.664M6.75 7.5h1.5" /></svg>
+                        <span>Kelola Pengajuan</span>
+                    </a></li>
+                    <li><a href="#review-management" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" /></svg>
+                        <span>Kelola Ulasan</span>
+                    </a></li>
+                    <li><a href="#admin-user-management" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0012 15.75a7.488 7.488 0 00-5.982 2.975m11.963 0a9 9 0 10-11.963 0m11.963 0A8.966 8.966 0 0112 21a8.966 8.966 0 01-5.982-2.275M15 9.75a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                        <span>Kelola User Admin</span>
+                    </a></li>
+                    <li><a href="#settings" class="nav-link">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:20px; height:20px;">
+                            <path fill-rule="evenodd" d="M11.828 2.25c-.916 0-1.699.663-1.85 1.567l-.091.549a9.006 9.006 0 00-1.902.903l-.495-.22a1.875 1.875 0 00-2.176.42l-1.5 2.598a1.875 1.875 0 00.42 2.176l.22.495a9.006 9.006 0 00-.903 1.902l-.549.091c-.904.151-1.567.934-1.567 1.85v1.854c0 .916.663 1.699 1.567 1.85l.549.091c.281.467.605.898.903 1.902l-.22.495a1.875 1.875 0 00-.42 2.176l1.5 2.598a1.875 1.875 0 002.176.42l.495-.22a9.006 9.006 0 001.902.903l.091.549c.151.904.934 1.567 1.85 1.567h1.854c.916 0 1.699-.663 1.85-1.567l.091-.549a9.006 9.006 0 001.902-.903l.495.22a1.875 1.875 0 002.176-.42l1.5-2.598a1.875 1.875 0 00-.42-2.176l-.22-.495a9.006 9.006 0 00.903-1.902l.549-.091c.904-.151 1.567.934 1.567-1.85v-1.854c0-.916-.663-1.699-1.567-1.85l-.549-.091a9.006 9.006 0 00-.903-1.902l.22-.495a1.875 1.875 0 00.42-2.176l-1.5-2.598a1.875 1.875 0 00-2.176-.42l-.495.22a9.006 9.006 0 00-1.902-.903l-.091-.549c-.151-.904-.934-1.567-1.85-1.567h-1.854zM12 15.75a3.75 3.75 0 100-7.5 3.75 3.75 0 000 7.5z" clip-rule="evenodd" />
+                        </svg>
+                        <span>Pengaturan</span>
+                    </a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="logout-btn" class="btn-logout">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" /></svg>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <header class="main-header">
+                <button class="hamburger-btn" id="hamburger-btn" aria-label="Toggle Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                    </svg>
+                </button>
+                <div class="user-info">
+                    <span id="admin-name-display">Selamat Datang, Admin</span>
+                </div>
+            </header>
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <h1>Dashboard</h1>
+                <p>Selamat datang di panel admin. Silakan pilih menu di sidebar untuk mulai mengelola konten.</p>
+                <div class="dashboard-summary">
+                    <div class="summary-card">
+                        <div class="summary-card-icon icon-hotel" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+                        </div>
+                        <div class="summary-card-content">
+                            <h4>Total Hotel</h4>
+                            <p id="total-hotels">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-icon icon-submission" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>
+                        </div>
+                        <div class="summary-card-content">
+                            <h4>Total Pengajuan</h4>
+                            <p id="total-submissions">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-icon icon-booking" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+                        </div>
+                        <div class="summary-card-content">
+                            <h4>Total Booking</h4>
+                            <p id="total-bookings">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-icon icon-testimonial" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M21.99 4c0-1.1-.89-2-1.99-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4-.01-18zM18 14H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/></svg>
+                        </div>
+                        <div class="summary-card-content">
+                            <h4>Total Testimoni</h4>
+                            <p id="total-testimonials">0</p>
+                        </div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-icon icon-company" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7V3H2v18h20V7H12zM6 19H4v-2h2v2zm0-4H4v-2h2v2zm0-4H4V9h2v2zm0-4H4V5h2v2zm4 12H8v-2h2v2zm0-4H8v-2h2v2zm0-4H8V9h2v2zm0-4H8V5h2v2zm10 12h-8v-2h2v-2h-2v-2h2v-2h-2V9h8v10zM18 11h-2v2h2v-2zm0 4h-2v2h2v-2z"/></svg>
+                        </div>
+                        <div class="summary-card-content">
+                            <h4>Perusahaan Aktif</h4>
+                            <p id="total-companies">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="dashboard-main-row">
+                    <div class="chart-container">
+                        <h2>Tren Booking (30 Hari Terakhir)</h2>
+                        <canvas id="booking-trend-chart"></canvas>
+                    </div>
+                    <div class="activity-feed-container">
+                        <h2>Aktivitas Terbaru</h2>
+                        <ul id="activity-feed-list">
+                            <!-- Aktivitas akan dimuat di sini -->
+                            <li>Memuat aktivitas...</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="dashboard-allotment-container" class="mt-4">
+                    <!-- Tabel ringkasan alotment akan dimuat di sini oleh JavaScript -->
+                </div>
+
+            </section>
+
+            <!-- Hotel Management Section -->
+            <section id="hotel-management" class="content-section">
+                <h1>Kelola Hotel & Kamar</h1>
+                <button id="add-hotel-btn" class="btn btn-primary">Tambah Hotel Baru</button>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama Hotel</th>
+                                <th>Rating Rata-rata</th>
+                                <th>Gambar URL</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="hotel-table-body">
+                            <!-- Data hotel akan dimuat di sini oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Promo Management Section -->
+            <section id="promo-management" class="content-section">
+                <h1>Kelola Promo Halaman Utama</h1>
+                <button id="add-promo-btn" class="btn btn-primary">Tambah Promo Baru</button>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Preview Gambar</th>
+                                <th>Judul (Alt Text)</th>
+                                <th>Link URL</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="promo-table-body">
+                            <!-- Data promo akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Booking Management Section -->
+            <section id="booking-management" class="content-section">
+                <h1>Kelola Booking</h1>
+                <p>Daftar semua pemesanan yang masuk melalui halaman detail hotel.</p>
+                <div class="search-container">
+                    <form id="booking-search-form">
+                        <input type="search" id="booking-search-input" placeholder="Cari berdasarkan nama tamu, email, atau hotel...">
+                        <button type="submit" class="btn btn-primary">Cari</button>
+                    </form>
+                    <div class="filter-container">
+                        <label for="booking-status-filter">Filter Status:</label>
+                        <select id="booking-status-filter" class="form-control">
+                            <option value="">Semua</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="canceled">Canceled</option>
+                        </select>
+                        <label for="booking-start-date">Dari Tgl:</label>
+                        <input type="date" id="booking-start-date" class="form-control">
+                        <label for="booking-end-date">Sampai Tgl:</label>
+                        <input type="date" id="booking-end-date" class="form-control">
+                        <button type="button" id="booking-filter-reset-btn" class="btn btn-secondary">Reset</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nama Tamu</th>
+                                <th>Perusahaan / Sumber</th>
+                                <th>Email</th>
+                                <th>Hotel</th>
+                                <th>Tipe Kamar</th>
+                                <th>Check-in</th>
+                                <th>Check-out</th>
+                                <th>Total Harga</th>
+                                <th>Status</th>
+                                <th>Tgl. Booking</th>
+                                <th>Lampiran</th>
+                            </tr>
+                        </thead>
+                        <tbody id="booking-table-body">
+                            <!-- Data booking akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="pagination-controls" id="booking-pagination">
+                    <!-- Tombol paginasi akan dirender di sini -->
+                </div>
+            </section>
+
+            <!-- Testimonial Management Section -->
+            <section id="testimonial-management" class="content-section">
+                <h1>Kelola Testimoni</h1>
+                <button id="add-testimonial-btn" class="btn btn-primary">Tambah Testimoni Baru</button>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama Penulis</th>
+                                <th>Jabatan</th>
+                                <th>Kutipan</th>
+                                <th>Gambar URL</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="testimonial-table-body">
+                            <!-- Data testimoni akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Submission Management Section -->
+            <section id="submission-management" class="content-section">
+                <h1>Kelola Data Pengajuan Credit Facility</h1>
+                <div class="table-controls">
+                    <input type="search" id="submission-search-input" placeholder="Cari berdasarkan nama perusahaan, NPWP, atau PIC...">
+                    <select id="submission-status-filter">
+                        <option value="">Semua Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="verifying">Verifying</option>
+                        <option value="approved">Approved</option>
+                        <option value="rejected">Rejected</option>
+                    </select>
+                    <button id="submission-filter-reset" class="btn btn-secondary">Reset</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama Perusahaan</th>
+                                <th>NPWP</th>
+                                <th>Info PIC</th>
+                                <th>Email Keuangan</th>
+                                <th>Estimasi Kredit</th>
+                                <th>Jenis Kebutuhan</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="submission-table-body">
+                            <!-- Data pengajuan akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Company Management Section -->
+            <section id="company-management" class="content-section">
+                <h1>Kelola Perusahaan Aktif</h1>
+                <p>Di sini Anda dapat melihat dan mengelola perusahaan yang telah disetujui fasilitas kreditnya.</p>
+                <div class="table-controls">
+                    <input type="search" id="company-search-input" placeholder="Cari berdasarkan nama perusahaan...">
+                    <select id="company-status-filter">
+                        <option value="">Semua Status</option>
+                        <option value="active">Aktif</option>
+                        <option value="suspended">Suspended</option>
+                    </select>
+                    <button id="company-filter-reset" class="btn btn-secondary">Reset</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID Perusahaan</th>
+                                <th>Nama Perusahaan</th>
+                                <th>Limit Kredit</th>
+                                <th>Kredit Terpakai</th>
+                                <th>Status Perusahaan</th>
+                                <th>Aksi & Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody id="company-table-body">
+                            <!-- Data perusahaan akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Review Management Section -->
+            <section id="review-management" class="content-section">
+                <h1>Kelola Ulasan Tamu</h1>
+                <p>Lihat, hapus, atau tampilkan ulasan di halaman utama sebagai testimoni.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hotel</th>
+                                <th>Tamu</th>
+                                <th>Rating</th>
+                                <th style="width: 30%;">Komentar</th>
+                                <th>Tanggal</th>
+                                <th>Tampilkan di Depan?</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="review-table-body">
+                            <!-- Data ulasan akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Admin User Management Section -->
+            <section id="admin-user-management" class="content-section">
+                <h1>Kelola User Admin</h1>
+                <p>Kelola user admin, atur role, dan tetapkan hak akses hotel.</p>
+
+                <div class="section-controls" style="margin-bottom: 20px;">
+                    <button id="btn-create-admin-user" class="btn btn-primary">Buat User Admin Baru</button>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="admin-user-table-body">
+                            <!-- Data user admin akan dimuat di sini oleh JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Settings Section -->
+            <section id="settings" class="content-section">
+                <h2>Pengaturan</h2>
+                <div class="settings-grid">
+                    <!-- Logo Settings Card Trigger -->
+                    <div class="settings-card" data-modal-target="logo-settings-modal">
+                        <div class="settings-card-icon">
+                            <i class="fas fa-signature"></i>
+                        </div>
+                        <h3>Logo Dokumen</h3>
+                        <p>Atur logo yang akan tampil di kepala surat dokumen PDF pengajuan.</p>
+                    </div>
+                    <!-- Hero Image Settings Card Trigger -->
+                    <div class="settings-card" data-modal-target="hero-settings-modal">
+                        <div class="settings-card-icon">
+                            <i class="fas fa-image"></i>
+                        </div>
+                        <h3>Gambar Latar Belakang</h3>
+                        <p>Ubah gambar yang ditampilkan di bagian atas halaman booking utama.</p>
+                    </div>
+                    <!-- Payment Gateway Settings Card Trigger -->
+                    <div class="settings-card" data-modal-target="payment-gateway-modal">
+                        <div class="settings-card-icon">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <h3>Payment Gateway (Midtrans)</h3>
+                        <p>Atur kunci API Midtrans untuk menerima pembayaran pada booking publik.</p>
+                    </div>
+                    <!-- Integration Settings Card Trigger -->
+                    <div class="settings-card" data-modal-target="integration-settings-modal">
+                        <div class="settings-card-icon">
+                            <i class="fas fa-plug"></i>
+                        </div>
+                        <h3>Integrasi Pihak Ketiga</h3>
+                        <p>Konfigurasi koneksi ke API sistem hotel eksternal (Contoh: VHP Sindata).</p>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- SETTINGS MODALS -->
+    <!-- ================================================================= -->
+
+    <!-- Modal for Logo Settings -->
+    <div class="modal-overlay" id="logo-settings-modal-overlay"></div>
+    <div class="modal" id="logo-settings-modal">
+        <button class="modal-close-btn" id="logo-settings-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2>Logo Perusahaan untuk Dokumen</h2>
+        </div>
+        <div class="modal-body">
+            <form id="logo-settings-form">
+                <p>URL logo ini akan ditampilkan di bagian atas dokumen PDF yang dicetak. Direkomendasikan menggunakan format PNG dengan latar transparan.</p>
+                <div class="form-group">
+                    <label for="logo-image-url">URL Logo</label>
+                    <input type="url" id="logo-image-url" placeholder="https://example.com/logo.png" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Logo</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Hero Settings -->
+    <div class="modal-overlay" id="hero-settings-modal-overlay"></div>
+    <div class="modal" id="hero-settings-modal">
+        <button class="modal-close-btn" id="hero-settings-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2>Gambar Latar Belakang</h2>
+        </div>
+        <div class="modal-body">
+            <form id="hero-settings-form">
+                <p>URL gambar ini akan digunakan sebagai latar belakang di halaman booking utama.</p>
+                <div class="form-group">
+                    <label for="hero-image-url">URL Gambar</label>
+                    <input type="url" id="hero-image-url" placeholder="https://example.com/image.jpg" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Payment Gateway Settings -->
+    <div class="modal-overlay" id="payment-gateway-modal-overlay"></div>
+    <div class="modal" id="payment-gateway-modal">
+        <button class="modal-close-btn" id="payment-gateway-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2>Payment Gateway (Midtrans)</h2>
+        </div>
+        <div class="modal-body">
+            <form id="payment-gateway-form">
+                <p>Masukkan kredensial Midtrans Anda untuk lingkungan Sandbox atau Produksi.</p>
+                <div class="form-group">
+                    <label for="pg-is-production">Lingkungan</label>
+                    <select id="pg-is-production" required>
+                        <option value="false">Sandbox (Untuk Testing)</option>
+                        <option value="true">Produksi (Live)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="pg-server-key">Server Key</label>
+                    <input type="text" id="pg-server-key" required>
+                </div>
+                <div class="form-group">
+                    <label for="pg-client-key">Client Key</label>
+                    <input type="text" id="pg-client-key" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Konfigurasi</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Integration Settings -->
+    <div class="modal-overlay" id="integration-settings-modal-overlay"></div>
+    <div class="modal" id="integration-settings-modal">
+        <button class="modal-close-btn" id="integration-settings-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2>Integrasi Pihak Ketiga</h2>
+        </div>
+        <div class="modal-body">
+            <form id="integration-settings-form">
+                <p>Masukkan detail untuk integrasi dengan sistem eksternal (jika ada).</p>
+                <div class="form-group"><label for="integration-api-url">API URL</label><input type="url" id="integration-api-url" placeholder="https://api.external.com/v1"></div>
+                <div class="form-group"><label for="integration-api-key">API Key</label><input type="text" id="integration-api-key"></div>
+                <div class="form-group"><label for="integration-hotel-id">Hotel ID</label><input type="text" id="integration-hotel-id" placeholder="ID hotel di sistem eksternal"></div>
+                <button type="submit" class="btn btn-primary">Simpan Konfigurasi</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Approving Submission -->
+    <div class="modal-overlay" id="approve-modal-overlay"></div>
+    <div class="modal" id="approve-modal">
+        <button class="modal-close-btn" id="approve-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="approve-modal-title">Setujui Pengajuan</h2>
+        </div>
+        <div class="modal-body">
+            <form id="approve-form">
+                <input type="hidden" id="approve-submission-id">
+                <p>Anda akan menyetujui pengajuan untuk: <strong id="approve-company-name"></strong></p>
+                <div class="form-group">
+                    <label for="credit-limit">Masukkan Limit Kredit (Rp)</label>
+                    <input type="number" id="credit-limit" placeholder="Contoh: 50000000" required>
+                </div>
+                <div class="form-group">
+                    <label for="approve-hotel-access">Pilih Hotel yang Dapat Diakses</label>
+                    <select id="approve-hotel-access" class="form-control" multiple>
+                        <!-- Opsi hotel akan dimuat oleh JavaScript -->
+                    </select>
+                    <small>Tahan Ctrl (atau Cmd di Mac) untuk memilih lebih dari satu. Kosongkan untuk memberi akses ke semua hotel.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Setujui dan Buat Akun</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Company -->
+    <div class="modal-overlay" id="edit-company-modal-overlay"></div>
+    <div class="modal" id="edit-company-modal">
+        <button class="modal-close-btn" id="edit-company-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="edit-company-modal-title">Edit Detail Perusahaan</h2>
+        </div>
+        <div class="modal-body">
+            <form id="edit-company-form">
+                <input type="hidden" id="edit-company-id">
+                <p>Anda sedang mengedit: <strong id="edit-company-name"></strong></p>
+                <div class="form-group">
+                    <label for="edit-credit-limit">Limit Kredit (Rp)</label>
+                    <input type="number" id="edit-credit-limit" placeholder="Contoh: 50000000" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-company-hotel-access">Ubah Hotel yang Dapat Diakses</label>
+                    <select id="edit-company-hotel-access" class="form-control" multiple>
+                        <!-- Opsi hotel akan dimuat oleh JavaScript -->
+                    </select>
+                    <small>Tahan Ctrl (atau Cmd di Mac) untuk memilih lebih dari satu. Kosongkan untuk memberi akses ke semua hotel.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Hotel -->
+    <div class="modal-overlay" id="hotel-modal-overlay"></div>
+    <div class="modal" id="hotel-modal">
+        <button class="modal-close-btn" id="hotel-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="hotel-modal-title">Tambah Hotel Baru</h2>
+        </div>
+        <div class="modal-body">
+            <form id="hotel-form">
+                <input type="hidden" id="hotel-id">
+                <div class="form-group">
+                    <label for="hotel-name">Nama Hotel</label>
+                    <input type="text" id="hotel-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="hotel-description">Deskripsi Hotel</label>
+                    <textarea id="hotel-description" rows="5" placeholder="Jelaskan tentang hotel ini, lokasinya, dan apa yang membuatnya unik..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="hotel-amenities">Fasilitas Unggulan (pisahkan dengan koma)</label>
+                    <textarea id="hotel-amenities" rows="3" placeholder="Contoh: Kolam Renang, WiFi Gratis, Restoran"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="hotel-image-url">URL Gambar</label>
+                    <input type="url" id="hotel-image-url" required>
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Simpan</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Room Management -->
+    <div class="modal-overlay" id="room-management-modal-overlay"></div>
+    <div class="modal" id="room-management-modal">
+        <button class="modal-close-btn" id="room-management-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="room-management-modal-title">Kelola Kamar untuk Hotel X</h2>
+        </div>
+        <div class="modal-body">
+            <button id="add-room-btn" class="btn btn-primary" style="margin-bottom: 20px;">Tambah Tipe Kamar</button>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama Kamar</th>
+                            <th>Harga Default</th>
+                            <th>Gambar</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="room-table-body">
+                        <!-- data kamar -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Room -->
+    <div class="modal-overlay" id="room-form-modal-overlay"></div>
+    <div class="modal" id="room-form-modal">
+        <button class="modal-close-btn" id="room-form-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="room-form-modal-title">Tambah/Edit Kamar</h2>
+        </div>
+        <div class="modal-body">
+            <form id="room-form">
+                <input type="hidden" id="room-id">
+                <input type="hidden" id="room-hotel-id">
+                <div class="form-group">
+                    <label for="room-name">Nama Tipe Kamar</label>
+                    <input type="text" id="room-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="room-description">Deskripsi Kamar</label>
+                    <textarea id="room-description" rows="3" placeholder="Deskripsi singkat tentang kamar..."></textarea>
+                </div>
+                <div class="form-group">
+                    <fieldset class="price-options-fieldset">
+                        <legend>Paket Harga</legend>
+                        <div id="room-price-options-container">
+                            <!-- Opsi harga akan dirender oleh JS di sini -->
+                        </div>
+                        <button type="button" id="add-price-option-btn" class="btn btn-secondary btn-sm">Tambah Opsi Harga</button>
+                    </fieldset>
+                </div>
+                <div class="form-group">
+                    <label for="room-facilities">Fasilitas (pisahkan dengan koma)</label>
+                    <textarea id="room-facilities" rows="3" placeholder="Contoh: AC, WiFi, TV Kabel"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="room-image-url">URL Gambar Kamar</label>
+                    <input type="url" id="room-image-url" placeholder="https://example.com/image.jpg">
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Kamar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Allotment Management -->
+    <div class="modal-overlay" id="allotment-management-modal-overlay"></div>
+    <div class="modal" id="allotment-management-modal">
+        <button class="modal-close-btn" id="allotment-management-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="allotment-management-modal-title">Kelola Alotment Kamar</h2>
+        </div>
+        <div class="modal-body">
+            <form id="allotment-form">
+                <input type="hidden" id="allotment-room-id">
+                <p>Atur jumlah kamar yang tersedia untuk dijual pada rentang tanggal tertentu.</p>
+                <div class="form-group-grid" style="grid-template-columns: 1fr 1fr 1fr; align-items: end;">
+                    <div class="form-group">
+                        <label for="allotment-start-date">Dari Tanggal</label>
+                        <input type="date" id="allotment-start-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="allotment-end-date">Sampai Tanggal</label>
+                        <input type="date" id="allotment-end-date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="allotment-count">Jumlah Kamar</label>
+                        <input type="number" id="allotment-count" min="0" placeholder="e.g., 10" required>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Alotment</button>
+            </form>
+            <div id="current-allotments-container" style="margin-top: 2rem;">
+                <h4>Alotment Saat Ini (30 hari ke depan)</h4>
+                <div id="current-allotments-list" class="table-container">Memuat...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Creating User -->
+    <div class="modal-overlay" id="create-user-modal-overlay"></div>
+    <div class="modal" id="create-user-modal">
+        <button class="modal-close-btn" id="create-user-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="create-user-modal-title">Buat User Login</h2>
+        </div>
+        <div class="modal-body">
+            <form id="create-user-form">
+                <input type="hidden" id="create-user-company-id">
+                <p>Anda akan membuat user untuk: <strong id="create-user-company-name"></strong></p>
+                <div class="form-group">
+                    <label for="create-user-full-name">Nama Lengkap User (PIC)</label>
+                    <input type="text" id="create-user-full-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="create-user-email">Email User</label>
+                    <input type="email" id="create-user-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="create-user-password">Password Sementara</label>
+                    <input type="password" id="create-user-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Buat User</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Managing User -->
+    <div class="modal-overlay" id="manage-user-modal-overlay"></div>
+    <div class="modal" id="manage-user-modal">
+        <button class="modal-close-btn" id="manage-user-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="manage-user-modal-title">Kelola User</h2>
+        </div>
+        <div class="modal-body">
+            <form id="manage-user-form">
+                <input type="hidden" id="manage-user-id">
+                <p>User untuk: <strong id="manage-user-company-name"></strong></p>
+                <div class="form-group">
+                    <label for="manage-user-email">Email User (Read-only)</label>
+                    <input type="email" id="manage-user-email" readonly>
+                </div>
+                <hr>
+                <label for="reset-user-password">Reset Password (kosongkan jika tidak ingin diubah)</label>
+                <input type="password" id="reset-user-password" placeholder="Masukkan password baru" class="form-control" style="margin-bottom: 15px;">
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                <button type="button" id="delete-user-btn" class="btn btn-delete">Hapus User Ini</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Employee Management -->
+    <div class="modal-overlay" id="employee-management-modal-overlay"></div>
+    <div class="modal" id="employee-management-modal">
+        <button class="modal-close-btn" id="employee-management-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="employee-management-modal-title">Kelola Karyawan</h2>
+        </div>
+        <div class="modal-body">
+            <button id="add-employee-btn" class="btn btn-primary" style="margin-bottom: 20px;">Tambah Karyawan Baru</button>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Nama Lengkap</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="employee-table-body">
+                        <!-- data karyawan -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Employee -->
+    <div class="modal-overlay" id="employee-form-modal-overlay"></div>
+    <div class="modal" id="employee-form-modal">
+        <button class="modal-close-btn" id="employee-form-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="employee-form-modal-title">Tambah Karyawan</h2>
+        </div>
+        <div class="modal-body">
+            <form id="employee-form">
+                <input type="hidden" id="employee-id">
+                <input type="hidden" id="employee-company-id">
+                <div class="form-group"><label for="employee-full-name">Nama Lengkap</label><input type="text" id="employee-full-name" required></div>
+                <div class="form-group"><label for="employee-email">Email</label><input type="email" id="employee-email" required></div>
+                <div class="form-group">
+                    <label for="employee-password">Password</label>
+                    <input type="password" id="employee-password">
+                    <small>Wajib diisi untuk user baru. Kosongkan jika tidak ingin mengubah password.</small>
+                </div>
+                <div class="form-group"><label for="employee-role">Role</label><select id="employee-role" required><option value="employee">Karyawan (Bisa Booking)</option><option value="approver">Approver (Bisa Booking & Approval)</option></select></div>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Testimonial -->
+    <div class="modal-overlay" id="testimonial-modal-overlay"></div>
+    <div class="modal" id="testimonial-modal">
+        <button class="modal-close-btn" id="testimonial-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="testimonial-modal-title">Tambah Testimoni Baru</h2>
+        </div>
+        <div class="modal-body">
+            <form id="testimonial-form">
+                <input type="hidden" id="testimonial-id">
+                <div class="form-group">
+                    <label for="testimonial-author">Nama Penulis</label>
+                    <input type="text" id="testimonial-author" required>
+                </div>
+                <div class="form-group">
+                    <label for="testimonial-title">Jabatan, Perusahaan</label>
+                    <input type="text" id="testimonial-title" required>
+                </div>
+                <div class="form-group">
+                    <label for="testimonial-quote">Kutipan</label>
+                    <textarea id="testimonial-quote" rows="4" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="testimonial-image-url">URL Gambar Penulis</label>
+                    <input type="url" id="testimonial-image-url" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Promo -->
+    <div class="modal-overlay" id="promo-modal-overlay"></div>
+    <div class="modal" id="promo-modal">
+        <button class="modal-close-btn" id="promo-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="promo-modal-title">Tambah Promo Baru</h2>
+        </div>
+        <div class="modal-body">
+            <form id="promo-form">
+                <input type="hidden" id="promo-id">
+                <div class="form-group">
+                    <label for="promo-image-url">URL Gambar Promo</label>
+                    <input type="url" id="promo-image-url" class="form-control" placeholder="https://example.com/promo.jpg" required>
+                </div>
+                <div class="form-group">
+                    <label for="promo-title">Judul (untuk Alt Text)</label>
+                    <input type="text" id="promo-title" class="form-control" placeholder="Contoh: Promo Diskon Akhir Tahun">
+                </div>
+                <div class="form-group">
+                    <label for="promo-hotel-id">Link ke Hotel (Opsional)</label>
+                    <select id="promo-hotel-id" class="form-control">
+                        <option value="">-- Tidak ada link ke hotel spesifik --</option>
+                        <!-- Opsi hotel akan dimuat oleh JavaScript -->
+                    </select>
+                    <small>Jika dipilih, promo akan mengarah ke halaman detail hotel ini.</small>
+                </div>
+                <div class="form-group">
+                    <label for="promo-link-url">Link URL (jika promo TIDAK link ke hotel)</label>
+                    <input type="url" id="promo-link-url" class="form-control" placeholder="https://tujuan-link.com/promo-detail">
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Promo</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Company Specific Pricing -->
+    <div class="modal-overlay" id="company-price-modal-overlay"></div>
+    <div class="modal" id="company-price-modal">
+        <button class="modal-close-btn" id="company-price-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="company-price-modal-title">Kelola Harga Khusus</h2>
+        </div>
+        <div class="modal-body">
+            <form id="company-price-form">
+                <input type="hidden" id="price-form-company-id">
+                <p>Atur harga khusus untuk kamar yang akan dipesan oleh perusahaan ini. Jika harga khusus kosong, maka harga default yang akan digunakan.</p>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Hotel</th>
+                                <th>Tipe Kamar</th>
+                                <th>Paket / Harga Default</th>
+                                <th>Harga Khusus (Rp)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="company-price-table-body">
+                            <!-- Data harga kamar akan dimuat di sini -->
+                        </tbody>
+                    </table>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan Harga</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Add/Edit Admin User -->
+    <div class="modal-overlay" id="admin-user-modal-overlay"></div>
+    <div class="modal" id="admin-user-modal">
+        <button class="modal-close-btn" id="admin-user-modal-close-btn">&times;</button>
+        <div class="modal-header">
+            <h2 id="admin-user-modal-title">Tambah User Admin</h2>
+        </div>
+        <div class="modal-body">
+            <form id="admin-user-form" class="form-layout">
+                <input type="hidden" id="admin-user-id">
+                <div class="form-group">
+                    <label for="modal-admin-user-name">Nama Lengkap</label>
+                    <input type="text" id="modal-admin-user-name" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-admin-user-email">Email</label>
+                    <input type="email" id="modal-admin-user-email" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="modal-admin-user-password">Password</label>
+                    <input type="password" id="modal-admin-user-password" class="form-control" placeholder="Kosongkan jika tidak ingin mengubah">
+                </div>
+                <div class="form-group">
+                    <label for="modal-admin-user-role">Role</label>
+                    <select id="modal-admin-user-role" class="form-control" required>
+                        <option value="admin">Admin</option>
+                        <option value="superadmin">Super Admin</option>
+                    </select>
+                </div>
+                <div class="form-group" id="admin-hotel-access-group" style="display: none;">
+                    <label for="modal-admin-hotel-access">Hak Akses Hotel (hanya untuk role Admin)</label>
+                    <select id="modal-admin-hotel-access" class="form-control" multiple>
+                        <!-- Opsi hotel akan dimuat oleh JavaScript -->
+                    </select>
+                    <small>Tahan Ctrl (atau Cmd di Mac) untuk memilih lebih dari satu.</small>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan User</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal for Editing Submission -->
+    <div class="modal-overlay" id="edit-submission-modal-overlay"></div>
+    <div class="modal" id="edit-submission-modal">
+        <button class="modal-close-btn" id="edit-submission-modal-close-btn" aria-label="Tutup">&times;</button>
+        <div class="modal-header">
+            <h2 id="edit-submission-modal-title">Edit Data Pengajuan</h2>
+            <p>Perbarui detail pengajuan di bawah ini.</p>
+        </div>
+        <div class="modal-body">
+            <form id="edit-submission-form">
+                <input type="hidden" id="edit-submission-id">
+                <fieldset class="form-group">
+                    <legend>Informasi Perusahaan</legend>
+                    <div class="form-group">
+                        <label for="edit-company-name">Nama Perusahaan (Sesuai Akta)</label>
+                        <input type="text" id="edit-company-name" name="companyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-company-npwp">No. NPWP Perusahaan</label>
+                        <input type="text" id="edit-company-npwp" name="companyNpwp" placeholder="Contoh: 01.234.567.8-901.000" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-company-address">Alamat Perusahaan</label>
+                        <textarea id="edit-company-address" name="companyAddress" rows="3" required></textarea>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <legend>Penanggung Jawab</legend>
+                    <div class="form-group">
+                        <label for="edit-contact-person-name">Nama PIC</label>
+                        <input type="text" id="edit-contact-person-name" name="contactPersonName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-contact-person-email">Email PIC</label>
+                        <input type="email" id="edit-contact-person-email" name="contactPersonEmail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-contact-person-phone">Nomor Telepon PIC</label>
+                        <input type="tel" id="edit-contact-person-phone" name="contactPersonPhone" required>
+                    </div>
+                     <div class="form-group">
+                        <label for="edit-finance-pic-email">Email Bagian Keuangan</label>
+                        <input type="email" id="edit-finance-pic-email" name="financePicEmail" required>
+                    </div>
+                </fieldset>
+
+                <fieldset class="form-group">
+                    <legend>Jenis Kebutuhan</legend>
+                    <div class="form-options-grid">
+                        <div><input type="radio" id="edit-mice" name="edit-service-type" value="mice" required><label for="edit-mice">MICE</label></div>
+                        <div><input type="radio" id="edit-travel" name="edit-service-type" value="travel" required><label for="edit-travel">TRAVEL</label></div>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <label for="edit-credit-estimation">Estimasi Kebutuhan Kredit per Bulan (IDR)</label>
+                    <input type="number" id="edit-credit-estimation" name="creditEstimation" placeholder="Contoh: 50000000" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+
+    <script src="admin-auth.js"></script> <!-- PENTING: Cek otentikasi sebelum memuat script utama -->
+    <script src="admin.js"></script>
+</body>
+</html>

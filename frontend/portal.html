@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Perusahaan - KAGUM MICE & TRAVEL BOOKING</title>
+    <link rel="stylesheet" href="style.css"> <!-- Menambahkan style utama untuk konsistensi -->
+    <link rel="stylesheet" href="portal.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <div id="company-name-display" class="logo">Memuat...</div>
+            <nav class="main-nav">
+                <a href="portal-history.html" class="nav-link-item">Riwayat Booking</a>
+                <!-- Tombol Ganti Password dengan ikon -->
+                <button id="change-password-btn" class="icon-btn" title="Ganti Password">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.25a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V3a.75.75 0 01.75-.75zM7.5 12a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM18.894 6.106a.75.75 0 111.06-1.06l1.591 1.59a.75.75 0 01-1.06 1.061l-1.591-1.59zM21.75 12a.75.75 0 01-.75.75h-2.25a.75.75 0 010-1.5h2.25a.75.75 0 01.75.75zM17.894 18.894a.75.75 0 011.06-1.06l1.591 1.59a.75.75 0 11-1.06 1.061l-1.591-1.59zM12 18.75a.75.75 0 01.75.75v2.25a.75.75 0 01-1.5 0V19.5a.75.75 0 01.75-.75zM5.106 17.894a.75.75 0 111.06 1.06l-1.59 1.591a.75.75 0 01-1.061-1.06l1.59-1.591zM3 12a.75.75 0 01.75-.75h2.25a.75.75 0 010 1.5H3.75A.75.75 0 013 12zM6.106 5.106a.75.75 0 011.06 1.06l-1.59 1.591a.75.75 0 11-1.06-1.061l1.59-1.591z" /></svg>
+                </button>
+                <a href="#" id="logout-btn" class="btn btn-primary">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="credit-info">
+            <div class="container">
+                <h2>Credit Facility Anda</h2>
+                <div class="credit-details">
+                    <div class="credit-card">
+                        <h4>Credit Tersedia</h4>
+                        <p id="available-credit">Rp 0</p>
+                    </div>
+                    <div class="credit-card">
+                        <h4>Credit Terpakai</h4>
+                        <p id="used-credit">Rp 0</p>
+                    </div>
+                    <div class="credit-card">
+                        <h4>Total Limit</h4>
+                        <p id="total-limit">Rp 0</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="room-selection">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Pilihan Hotel</h2>
+                    <p>Pilih hotel untuk melihat kamar yang tersedia dengan harga korporat spesial Anda.</p>
+                </div>
+                <div class="hotel-grid" id="hotel-grid-portal">
+                    <!-- Kartu hotel akan dirender di sini oleh portal.js -->
+                    <p>Memuat data hotel...</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 KAGUM MICE & TRAVEL BOOKING. Semua Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Change Password Modal -->
+    <div class="modal-overlay" id="change-password-modal-overlay"></div>
+    <div class="modal" id="change-password-modal">
+        <button class="modal-close-btn" id="change-password-modal-close-btn" aria-label="Tutup">&times;</button>
+        <div class="modal-header">
+            <h2>Ganti Password</h2>
+            <p>Untuk keamanan, silakan ganti password sementara Anda.</p>
+        </div>
+        <div class="modal-body">
+            <form id="change-password-form">
+                <div class="form-group">
+                    <label for="old-password">Password Lama</label>
+                    <input type="password" id="old-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">Password Baru (min. 6 karakter)</label>
+                    <input type="password" id="new-password" required minlength="6">
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Konfirmasi Password Baru</label>
+                    <input type="password" id="confirm-password" required minlength="6">
+                </div>
+                <button type="submit" class="btn btn-primary">Simpan Password Baru</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="portal.js"></script>
+</body>
+</html>

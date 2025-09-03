@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Beri Ulasan - KAGUM MICE & TRAVEL BOOKING</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="portal.css"> <!-- Meminjam beberapa style -->
+</head>
+<body>
+    <header class="main-header">
+        <div class="container">
+            <a href="index.html" class="logo">KAGUM MICE & TRAVEL BOOKING</a>
+        </div>
+    </header>
+
+    <main>
+        <section class="room-selection">
+            <div class="container" style="max-width: 600px;">
+                <div class="section-header">
+                    <h1>Beri Ulasan Atas Penginapan Anda</h1>
+                    <p>Kami sangat menghargai masukan Anda untuk meningkatkan layanan kami.</p>
+                </div>
+
+                <!-- Step 1: Verification Form -->
+                <div id="verification-step">
+                    <form id="verification-form" class="form-layout">
+                        <div id="verification-error" class="error-message" style="display: none;"></div>
+                        <div class="form-group">
+                            <label for="booking-id">ID Booking</label>
+                            <input type="text" id="booking-id" placeholder="Contoh: 123" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="booking-email">Email yang Digunakan Saat Booking</label>
+                            <input type="email" id="booking-email" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Verifikasi Booking</button>
+                    </form>
+                </div>
+
+                <!-- Step 2: Review Form (hidden by default) -->
+                <div id="review-step" style="display: none;">
+                    <div class="booking-summary" style="margin-bottom: 2rem;">
+                        <h4>Detail Booking Anda</h4>
+                        <p><strong>Hotel:</strong> <span id="review-hotel-name"></span></p>
+                        <p><strong>Tamu:</strong> <span id="review-guest-name"></span></p>
+                        <p><strong>Check-in:</strong> <span id="review-check-in"></span></p>
+                    </div>
+                    <form id="review-form">
+                        <div id="review-error" class="error-message" style="display: none;"></div>
+                        <div class="form-group">
+                            <label>Rating Anda</label>
+                            <div class="star-rating" id="review-star-rating">
+                                <span data-value="1">☆</span><span data-value="2">☆</span><span data-value="3">☆</span><span data-value="4">☆</span><span data-value="5">☆</span>
+                            </div>
+                            <input type="hidden" id="review-rating-value" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="review-comment">Komentar Anda (Opsional)</label>
+                            <textarea id="review-comment" rows="5" placeholder="Bagaimana pengalaman menginap Anda?"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
+                    </form>
+                </div>
+
+                <!-- Step 3: Success Message (hidden by default) -->
+                <div id="success-step" style="display: none; text-align: center;">
+                    <h2>Terima Kasih!</h2>
+                    <p>Ulasan Anda telah berhasil dikirim. Kami sangat menghargai waktu dan masukan Anda.</p>
+                    <a href="index.html" class="btn btn-secondary">Kembali ke Halaman Utama</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2025 KAGUM MICE & TRAVEL BOOKING. Semua Hak Cipta Dilindungi.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="submit-review.js"></script>
+</body>
+</html>
