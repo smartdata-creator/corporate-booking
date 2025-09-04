@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:3000/api';
+    const API_BASE_URL = 'https://corporate-booking.onrender.com/api';
 
     const verificationStep = document.getElementById('verification-step');
     const reviewStep = document.getElementById('review-step');
@@ -121,3 +121,4 @@ document.addEventListener('DOMContentLoaded', () => {
         bookingIdInput.value = bookingIdFromUrl;
     }
 });
+
