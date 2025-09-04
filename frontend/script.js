@@ -1,4 +1,4 @@
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://corporate-booking.onrender.com/api';
 
 const formatCurrency = (number) => {
     if (number === null || number === undefined) return 'N/A';
@@ -475,4 +475,5 @@ document.addEventListener('DOMContentLoaded', () => {
     renderHotelCards();
     renderHotelReviews();
     renderTestimonials();
+
 });
