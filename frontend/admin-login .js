@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:3000/api/admin/auth/login';
+    const API_BASE_URL = 'https://corporate-booking.onrender.com/api/admin/auth/login';
     const loginForm = document.getElementById('login-form');
     const errorMessageEl = document.getElementById('error-message');
 
@@ -33,4 +33,5 @@ document.addEventListener('DOMContentLoaded', () => {
             errorMessageEl.style.display = 'block';
         }
     });
+
 });
