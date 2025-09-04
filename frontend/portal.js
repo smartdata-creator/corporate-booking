@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:3000/api';
+    const API_BASE_URL = 'https://corporate-booking.onrender.com/api';
 
     // Ambil token dari localStorage. Kunci 'corporateAuthToken' harus konsisten dengan yang disimpan saat login.
     const token = localStorage.getItem('corporateAuthToken');
@@ -245,4 +245,5 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupWebSocket();
+
 });
