@@ -43,5 +43,4 @@ document.addEventListener('DOMContentLoaded', () => {
             errorMessageEl.style.display = 'block';
         }
     });
-
 });

@@ -475,5 +475,4 @@ document.addEventListener('DOMContentLoaded', () => {
     renderHotelCards();
     renderHotelReviews();
     renderTestimonials();
-
 });

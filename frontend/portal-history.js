@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:3000/api';
+    const API_BASE_URL = 'https://corporate-booking.onrender.com/api';
 
     // --- Authentication Check ---
     const token = localStorage.getItem('corporateAuthToken');

@@ -403,5 +403,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Panggil fungsi utama untuk memuat data
     fetchHotelDetails();
-
 });

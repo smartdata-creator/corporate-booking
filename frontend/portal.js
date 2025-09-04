@@ -245,5 +245,4 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setupWebSocket();
-
 });

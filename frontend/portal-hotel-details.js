@@ -578,5 +578,4 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Initial Load ---
     fetchDetails();
-
 });

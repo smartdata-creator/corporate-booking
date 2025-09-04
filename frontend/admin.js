@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const token = localStorage.getItem('adminAuthToken');
     const authHeader = { 'Authorization': `Bearer ${token}` };
 
-    const API_BASE_URL = 'http://localhost:3000/api';
+    const API_BASE_URL = 'https://corporate-booking.onrender.com/api';
 
     // --- State Aplikasi ---
     let hotels = [];
