@@ -70,7 +70,7 @@ const renderHotelReviews = async () => {
         });
     } catch (error) {
         console.error('Error rendering hotel reviews:', error);
-        hotelReviewsGrid.innerHTML = '<p style="color: red;">Gagal memuat ulasan.</p>';
+        hotelReviewsGrid.innerHTML = '<p class="error-message">Gagal memuat ulasan. Silakan coba lagi nanti.</p>';
     }
 };
 
