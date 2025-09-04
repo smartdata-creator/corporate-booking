@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const API_BASE_URL = 'http://localhost:3000/api';
+    const API_BASE_URL = 'https://corporate-booking.onrender.com/api';
 
     const hotelInfoContainer = document.getElementById('hotel-info-container');
     const hotelHeroSection = document.getElementById('hotel-hero-section');
@@ -403,4 +403,5 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Panggil fungsi utama untuk memuat data
     fetchHotelDetails();
+
 });
